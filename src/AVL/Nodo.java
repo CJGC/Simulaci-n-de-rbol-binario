@@ -5,26 +5,32 @@ package AVL;
  */
 public class Nodo extends binarytree.Nodo{
     
-        private Integer left_level;
-        private Integer right_level;
-        private String status;
+        private Integer nivel_izq;
+        private Integer nivel_der;
+        private String estado;
         
-        public Integer getLeft_level() {
-            return left_level;
+        public Nodo() {
+            nivel_izq = null;
+            nivel_der = null;
+            estado = null;
         }
-        public void setLeft_level(Integer left_level) {
-            this.left_level = left_level;
+        
+        public Integer getNivel_izq() {
+            return nivel_izq;
         }
-        public Integer getRight_level() {
-            return right_level;
+        public void setNivel_izq(Integer nivel_izq) {
+            this.nivel_izq = nivel_izq;
         }
-        public void setRight_level(Integer right_level) {
-            this.right_level = right_level;
+        public Integer getNivel_der() {
+            return nivel_der;
         }
-        public String getStatus() {
-            return status;
+        public void setNivel_der(Integer nivel_der) {
+            this.nivel_der = nivel_der;
         }
-        public void setStatus(String status) {
-            this.status = status;
+        public String getEstado() {
+            return estado;
+        }
+        public void setEstado(String estado) {
+            this.estado = estado;
         }
 }
