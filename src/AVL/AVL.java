@@ -1,11 +1,11 @@
 package AVL;
-import binarytree.Nodo;
+import binarytree.*;
 
 /**
  *
  * @author cj
  */
-public class AVL extends binarytree.Arbol_binario {
+public class AVL extends Arbol_binario {
     
     public AVL() {
         super();
@@ -21,6 +21,9 @@ public class AVL extends binarytree.Arbol_binario {
         if(hijo_izq_de_nodo_derecho != null) {
             hijo_izq_de_nodo_derecho.setPadre(nodo);
             nodo.setHijo_der(hijo_izq_de_nodo_derecho);
+        }
+        else {
+            nodo.setHijo_der(null);
         }
         
         /* actualizacion de indices de nivel */
@@ -41,7 +44,14 @@ public class AVL extends binarytree.Arbol_binario {
         }
         
         /* sino era raiz entonces configure su padre como el antiguo padre de
-        nodo */
+        nodo y digale a ese nuevo padre sobre su nuevo hijo */
+        if(nodo_padre.getHijo_izq() == nodo) {
+            nodo_padre.setHijo_izq(nodo_hijo_der);
+        }
+        else {
+            nodo_padre.setHijo_der(nodo_hijo_der);
+        }
+        
         nodo_hijo_der.setPadre(nodo_padre);
     }
 
@@ -55,6 +65,9 @@ public class AVL extends binarytree.Arbol_binario {
         if(hijo_der_de_nodo_izquierdo != null) {
             hijo_der_de_nodo_izquierdo.setPadre(nodo);
             nodo.setHijo_izq(hijo_der_de_nodo_izquierdo);
+        }
+        else {
+            nodo.setHijo_izq(null);
         }
         
         /* actualizacion de indices de nivel */
@@ -75,7 +88,13 @@ public class AVL extends binarytree.Arbol_binario {
         }
         
         /* sino era raiz entonces configure su padre como el antiguo padre de
-        nodo */
+        nodo y digale a ese nuevo padre sobre su nuevo hijo */
+        if(nodo_padre.getHijo_izq() == nodo) {
+            nodo_padre.setHijo_izq(nodo_hijo_izq);
+        }
+        else{
+            nodo_padre.setHijo_der(nodo_hijo_izq);
+        }
         nodo_hijo_izq.setPadre(nodo_padre);
     }
     
