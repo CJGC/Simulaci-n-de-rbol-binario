@@ -20,7 +20,7 @@ public class Main {
         System.out.print("Entra numero de opcion: ");
     }
 
-    protected void leerDatos(Nodo nodo) {
+    private void leerDatos(Nodo nodo) {
         boolean exit = false;
         do {
             try {
@@ -65,25 +65,25 @@ public class Main {
      * @param args the command line arguments
      * @throws java.lang.InterruptedException
      */
-    public static void main(String[] args) throws InterruptedException {
-        Main m = new Main();
-        Arbol_binario ab = new Arbol_binario();
-        Scanner scan = new Scanner(System.in);
-        Integer opt;
-        
-        do {
-            try {
-                m.menu();
-                String userInput = scan.nextLine();
-                opt = Integer.parseInt(userInput);
-                if (opt == 5) {
-                    break;
-                }
-                m.procesarOpt(opt, ab);
-            } catch (NumberFormatException e) {
-                System.err.println("Por favor ingrese un numero.");
-            }
-        } while (true);
-    }
+//    public static void main(String[] args) throws InterruptedException {
+//        Main m = new Main();
+//        Arbol_binario ab = new Arbol_binario();
+//        Scanner scan = new Scanner(System.in);
+//        Integer opt;
+//        
+//        do {
+//            try {
+//                m.menu();
+//                String userInput = scan.nextLine();
+//                opt = Integer.parseInt(userInput);
+//                if (opt == 5) {
+//                    break;
+//                }
+//                m.procesarOpt(opt, ab);
+//            } catch (NumberFormatException e) {
+//                System.err.println("Por favor ingrese un numero.");
+//            }
+//        } while (true);
+//    }
 
 }
