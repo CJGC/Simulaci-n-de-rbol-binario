@@ -1,13 +1,13 @@
 package AVL;
+import binarytree.Arbol_binario;
 import binarytree.Nodo;
 import java.util.Scanner;
 /**
  *
  * @author cj
  */
-public class Main extends binarytree.Main {
+public class Main {
     
-    @Override
     public void menu() {
         System.out.println("\n============Arbol AVL============");
         System.out.println("\t1) Imprimir arbol");
@@ -18,6 +18,22 @@ public class Main extends binarytree.Main {
         System.out.println("=================================");
         System.out.println();
         System.out.print("Entra numero de opcion: ");
+    }
+    
+    private void leerDatos(Nodo nodo) {
+        boolean exit = false;
+        do {
+            try {
+                Scanner scan = new Scanner(System.in);
+                String num;
+                System.out.print("Entra un numero: ");
+                num = scan.nextLine();
+                nodo.setValor(Integer.parseInt(num));
+                exit = true;
+            } catch (NumberFormatException e) {
+                System.err.println("Por favor ingrese un numero.");
+            }
+        } while (!exit);
     }
     
     public void procesarOpt(Integer opt,AVL avl) {
