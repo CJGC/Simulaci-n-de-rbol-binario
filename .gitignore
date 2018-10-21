@@ -2,3 +2,5 @@
 build/
 nbproject/
 manifest.mf
+.classpath
+.project
