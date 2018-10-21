@@ -4,11 +4,12 @@ package AVL;
  *
  * @author cj
  */
-public class Nodo extends binarytree.Nodo {
+public class Nodo {
     
     private Integer nivel_izq;
     private Integer nivel_der;
     private String estado;
+    private Integer valor;
     private Nodo hijo_izq;
     private Nodo hijo_der;
     private Nodo padre;
@@ -23,7 +24,7 @@ public class Nodo extends binarytree.Nodo {
     }
     
     public Nodo(Integer valor) {
-        super.setValor(valor);
+        this.valor = valor;
         nivel_izq = 0;
         nivel_der = 0;
         estado = "";
@@ -50,21 +51,24 @@ public class Nodo extends binarytree.Nodo {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    @Override
+    public Integer getValor() {
+        return valor;
+    }
+    public void setValor(Integer valor) {
+        this.valor = valor;
+    }
     public Nodo getHijo_izq() {
         return hijo_izq;
     }
     public void setHijo_izq(Nodo hijo_izq) {
         this.hijo_izq = hijo_izq;
     }
-    @Override
     public Nodo getHijo_der() {
         return hijo_der;
     }
     public void setHijo_der(Nodo hijo_der) {
         this.hijo_der = hijo_der;
     }
-    @Override
     public Nodo getPadre() {
         return padre;
     }
