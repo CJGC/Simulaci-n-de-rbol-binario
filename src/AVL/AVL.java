@@ -1,6 +1,5 @@
 package AVL;
 import binarytree.Nodo;
-import java.util.List;
 
 /**
  *
@@ -8,19 +7,8 @@ import java.util.List;
  */
 public class AVL extends binarytree.Arbol_binario {
     
-    private Nodo raiz;
-    
     public AVL() {
-        raiz = null;
-    }
-
-    @Override
-    public Nodo getRaiz() {
-        return raiz;
-    }
-    @Override
-    public void setRaiz(Nodo raiz) {
-        this.raiz = raiz;
+        super();
     }
     
     public void rotacion_izq(Nodo nodo) {
@@ -46,9 +34,9 @@ public class AVL extends binarytree.Arbol_binario {
         
         /* si el nodo que se roto era raiz significa que no tenia padre por lo
         tanto el nuevo padre es null */
-        if(nodo == raiz) {
+        if(nodo == getRaiz()) {
             nodo_hijo_der.setPadre(null);
-            raiz = nodo_hijo_der;
+            setRaiz(nodo_hijo_der);
             return;
         }
         
@@ -80,9 +68,9 @@ public class AVL extends binarytree.Arbol_binario {
         
         /* si el nodo que se roto era raiz significa que no tenia padre por lo
         tanto el nuevo padre es null */
-        if(nodo == raiz) {
+        if(nodo == getRaiz()) {
             nodo_hijo_izq.setPadre(null);
-            raiz = nodo_hijo_izq;
+            setRaiz(nodo_hijo_izq);
             return;
         }
         
@@ -120,8 +108,8 @@ public class AVL extends binarytree.Arbol_binario {
     }
     
     public int insertar(Nodo nuevo_nodo,Nodo nodo_actual,Nodo nodo_padre) {
-        if(raiz == null) {
-            raiz = nuevo_nodo;
+        if(getRaiz() == null) {
+            setRaiz(nuevo_nodo);
             return 0;
         }
         
