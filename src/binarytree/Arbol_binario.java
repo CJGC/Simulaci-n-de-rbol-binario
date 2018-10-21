@@ -7,7 +7,7 @@ public class Arbol_binario {
     private Nodo raiz;
     private boolean permitir_insercion;
 
-    Arbol_binario() {
+    public Arbol_binario() {
         raiz = null;
         permitir_insercion = true;
     }
