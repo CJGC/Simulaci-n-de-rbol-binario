@@ -15,6 +15,9 @@ public class Nodo {
     private Nodo padre;
 
     public Nodo() {
+        nivel_izq = 0;
+        nivel_der = 0;
+        estado = "";
         valor = null;
         hijo_der = null;
         hijo_izq = null;
@@ -22,6 +25,9 @@ public class Nodo {
     }
 
     public Nodo(Integer valor) {
+        nivel_izq = 0;
+        nivel_der = 0;
+        estado = "";
         this.valor = valor;
         hijo_izq = null;
         hijo_der = null;
