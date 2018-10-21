@@ -20,7 +20,7 @@ public class Main {
         System.out.print("Entra numero de opcion: ");
     }
 
-    private void leerDatos(Nodo nodo) {
+    protected void leerDatos(Nodo nodo) {
         boolean exit = false;
         do {
             try {
@@ -70,7 +70,7 @@ public class Main {
         Arbol_binario ab = new Arbol_binario();
         Scanner scan = new Scanner(System.in);
         Integer opt;
-
+        
         do {
             try {
                 m.menu();
