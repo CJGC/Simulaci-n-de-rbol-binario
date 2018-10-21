@@ -1,4 +1,7 @@
 package AVL;
+import binarytree.Nodo;
+import java.util.List;
+
 /**
  *
  * @author cj
@@ -15,7 +18,7 @@ public class AVL extends binarytree.Arbol_binario {
     public Nodo getRaiz() {
         return raiz;
     }
-    
+    @Override
     public void setRaiz(Nodo raiz) {
         this.raiz = raiz;
     }
@@ -181,5 +184,14 @@ public class AVL extends binarytree.Arbol_binario {
             determinar_tipo_de_balance_der(nodo_actual);
         }
         return 0;
+    }
+    
+    private void eliminar_nodo(Nodo nodo_actual, Nodo nodo_sustituto) {
+    
+    }
+    
+    @Override
+    public Nodo eliminar(Nodo nodo, Nodo nodo_actual, Nodo nodo_sustituto) {
+        return nodo;
     }
 }
