@@ -3,11 +3,15 @@ package AVL;
  *
  * @author cj
  */
-public class Nodo extends binarytree.Nodo{
+public class Nodo {
     
         private Integer nivel_izq;
         private Integer nivel_der;
         private String estado;
+        private Integer valor;
+	private Nodo hijo_der;
+	private Nodo hijo_izq;
+	private Nodo padre;
         
         public Nodo() {
             nivel_izq = null;
