@@ -45,8 +45,7 @@ public class Main {
                 break;
             case 2:
                 leerDatos(nuevo_nodo);
-                ab.setPermitir_insercion(true);
-                ab.insertar(nuevo_nodo, ab.getRaiz());
+                ab.insertar(nuevo_nodo, ab.getRaiz(),null);
                 break;
             case 3:
                 leerDatos(nuevo_nodo);
@@ -65,25 +64,25 @@ public class Main {
      * @param args the command line arguments
      * @throws java.lang.InterruptedException
      */
-//    public static void main(String[] args) throws InterruptedException {
-//        Main m = new Main();
-//        Arbol_binario ab = new Arbol_binario();
-//        Scanner scan = new Scanner(System.in);
-//        Integer opt;
-//        
-//        do {
-//            try {
-//                m.menu();
-//                String userInput = scan.nextLine();
-//                opt = Integer.parseInt(userInput);
-//                if (opt == 5) {
-//                    break;
-//                }
-//                m.procesarOpt(opt, ab);
-//            } catch (NumberFormatException e) {
-//                System.err.println("Por favor ingrese un numero.");
-//            }
-//        } while (true);
-//    }
+    public static void main(String[] args) throws InterruptedException {
+        Main m = new Main();
+        Arbol_binario ab = new Arbol_binario();
+        Scanner scan = new Scanner(System.in);
+        Integer opt;
+        
+        do {
+            try {
+                m.menu();
+                String userInput = scan.nextLine();
+                opt = Integer.parseInt(userInput);
+                if (opt == 5) {
+                    break;
+                }
+                m.procesarOpt(opt, ab);
+            } catch (NumberFormatException e) {
+                System.err.println("Por favor ingrese un numero.");
+            }
+        } while (true);
+    }
 
 }
