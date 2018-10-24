@@ -21,7 +21,7 @@ public class AVL extends Arbol_binario {
         if(hijo_izq_de_nodo_derecho != null) {
             hijo_izq_de_nodo_derecho.setPadre(nodo);
             nodo.setHijo_der(hijo_izq_de_nodo_derecho);
-            hijo_izq_de_nodo_derecho.setEstado("hijo der de " 
+            hijo_izq_de_nodo_derecho.setEstado(" hijo der de " 
                     + nodo.getValor());
         }
         else {
@@ -36,7 +36,7 @@ public class AVL extends Arbol_binario {
         quien es su nuevo hijo */
         nodo.setPadre(nodo_hijo_der);
         nodo_hijo_der.setHijo_izq(nodo);
-        nodo.setEstado("hijo izq de " + nodo_hijo_der.getValor());
+        nodo.setEstado(" hijo izq de " + nodo_hijo_der.getValor());
         
         /* si el nodo que se roto era raiz significa que no tenia padre por lo
         tanto el nuevo padre es null */
@@ -50,11 +50,11 @@ public class AVL extends Arbol_binario {
         nodo y digale a ese nuevo padre sobre su nuevo hijo */
         if(nodo_padre.getHijo_izq() == nodo) {
             nodo_padre.setHijo_izq(nodo_hijo_der);
-            nodo_hijo_der.setEstado("hijo izq de " + nodo_padre.getValor());
+            nodo_hijo_der.setEstado(" hijo izq de " + nodo_padre.getValor());
         }
         else {
             nodo_padre.setHijo_der(nodo_hijo_der);
-            nodo_hijo_der.setEstado("hijo der de " + nodo_padre.getValor());
+            nodo_hijo_der.setEstado(" hijo der de " + nodo_padre.getValor());
         }
         
         nodo_hijo_der.setPadre(nodo_padre);
@@ -70,7 +70,7 @@ public class AVL extends Arbol_binario {
         if(hijo_der_de_nodo_izquierdo != null) {
             hijo_der_de_nodo_izquierdo.setPadre(nodo);
             nodo.setHijo_izq(hijo_der_de_nodo_izquierdo);
-            hijo_der_de_nodo_izquierdo.setEstado("hijo izq de " 
+            hijo_der_de_nodo_izquierdo.setEstado(" hijo izq de " 
                     + nodo.getValor());
         }
         else {
@@ -85,7 +85,7 @@ public class AVL extends Arbol_binario {
         quien es su nuevo hijo */
         nodo.setPadre(nodo_hijo_izq);
         nodo_hijo_izq.setHijo_der(nodo);
-        nodo.setEstado("hijo der de " + nodo_hijo_izq.getValor());
+        nodo.setEstado(" hijo der de " + nodo_hijo_izq.getValor());
         
         /* si el nodo que se roto era raiz significa que no tenia padre por lo
         tanto el nuevo padre es null */
@@ -99,11 +99,11 @@ public class AVL extends Arbol_binario {
         nodo y digale a ese nuevo padre sobre su nuevo hijo */
         if(nodo_padre.getHijo_izq() == nodo) {
             nodo_padre.setHijo_izq(nodo_hijo_izq);
-            nodo_hijo_izq.setEstado("hijo izq de " + nodo_padre.getValor());
+            nodo_hijo_izq.setEstado(" hijo izq de " + nodo_padre.getValor());
         }
         else{
             nodo_padre.setHijo_der(nodo_hijo_izq);
-            nodo_hijo_izq.setEstado("hijo der de " + nodo_padre.getValor());
+            nodo_hijo_izq.setEstado(" hijo der de " + nodo_padre.getValor());
         }
         nodo_hijo_izq.setPadre(nodo_padre);
     }
@@ -145,12 +145,12 @@ public class AVL extends Arbol_binario {
         if(nodo_actual == null) {
             if(nuevo_nodo.getValor() < nodo_padre.getValor()) {
                 nodo_padre.setHijo_izq(nuevo_nodo);
-                nuevo_nodo.setEstado("Hijo izq del nodo "
+                nuevo_nodo.setEstado(" Hijo izq del nodo "
                         + nodo_padre.getValor());
             }
             else {
                 nodo_padre.setHijo_der(nuevo_nodo);
-                nuevo_nodo.setEstado("Hijo der del nodo " 
+                nuevo_nodo.setEstado(" Hijo der del nodo " 
                         + nodo_padre.getValor());
             }
             nuevo_nodo.setPadre(nodo_padre);
