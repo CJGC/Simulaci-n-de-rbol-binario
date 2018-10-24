@@ -24,16 +24,13 @@ public class Arbol_binarioTest {
         Nodo nodo_hijo_izq = new Nodo(10);
         Nodo nodo_hijo_der = new Nodo(20);
         
-        ab.setPermitir_insercion(true);
-        ab.insertar(nodo_padre,ab.getRaiz());
+        ab.insertar(nodo_padre,ab.getRaiz(),null);
         assertEquals(nodo_padre,ab.getRaiz());
         
-        ab.setPermitir_insercion(true);
-        ab.insertar(nodo_hijo_izq,ab.getRaiz());
+        ab.insertar(nodo_hijo_izq,ab.getRaiz(),null);
         assertEquals(nodo_hijo_izq,ab.getRaiz().getHijo_izq());
         
-        ab.setPermitir_insercion(true);
-        ab.insertar(nodo_hijo_der,ab.getRaiz());
+        ab.insertar(nodo_hijo_der,ab.getRaiz(),null);
         assertEquals(nodo_hijo_der,ab.getRaiz().getHijo_der());
         
         /* casos de insercion profunda */
@@ -43,24 +40,19 @@ public class Arbol_binarioTest {
         Nodo nodo25 = new Nodo(25);
         Nodo negNodo20 = new Nodo(-20);
         
-        ab.setPermitir_insercion(true);
-        ab.insertar(nodo5,ab.getRaiz());
+        ab.insertar(nodo5,ab.getRaiz(),null);
         assertEquals(nodo5,ab.getRaiz().getHijo_izq().getHijo_izq());
         
-        ab.setPermitir_insercion(true);
-        ab.insertar(nodo13,ab.getRaiz());
+        ab.insertar(nodo13,ab.getRaiz(),null);
         assertEquals(nodo13,ab.getRaiz().getHijo_izq().getHijo_der());
         
-        ab.setPermitir_insercion(true);
-        ab.insertar(nodo17,ab.getRaiz());
+        ab.insertar(nodo17,ab.getRaiz(),null);
         assertEquals(nodo17,ab.getRaiz().getHijo_der().getHijo_izq());
         
-        ab.setPermitir_insercion(true);
-        ab.insertar(nodo25,ab.getRaiz());
+        ab.insertar(nodo25,ab.getRaiz(),null);
         assertEquals(nodo25,ab.getRaiz().getHijo_der().getHijo_der());
 
-        ab.setPermitir_insercion(true);
-        ab.insertar(negNodo20,ab.getRaiz());
+        ab.insertar(negNodo20,ab.getRaiz(),null);
         assertEquals(negNodo20,ab.getRaiz().getHijo_izq().getHijo_izq().
                 getHijo_izq());
     }
@@ -78,8 +70,7 @@ public class Arbol_binarioTest {
         
         /* creacion del arbol */
         for(Nodo nodo : nodos) {
-            ab.setPermitir_insercion(true);
-            ab.insertar(nodo, ab.getRaiz());
+            ab.insertar(nodo, ab.getRaiz(), null);
         }
         
         /* seccion de pruebas de eliminacion de nodos */
@@ -121,8 +112,7 @@ public class Arbol_binarioTest {
         
         /* creacion del arbol */
         for(Nodo nodo : nodos) {
-            ab.setPermitir_insercion(true);
-            ab.insertar(nodo, ab.getRaiz());
+            ab.insertar(nodo, ab.getRaiz(),null);
         }
         
         /* seccion de pruebas para la busqueda de nodos */
@@ -161,8 +151,7 @@ public class Arbol_binarioTest {
         
         /* creacion del arbol */
         for(Nodo nodo : nodos) {
-            ab.setPermitir_insercion(true);
-            ab.insertar(nodo, ab.getRaiz());
+            ab.insertar(nodo, ab.getRaiz(), null);
         }
         
         /* seccion de prueba de listar arbol */
