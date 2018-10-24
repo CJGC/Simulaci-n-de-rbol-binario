@@ -22,6 +22,7 @@ public class Arbol_binario {
 
         if (raiz == null) {
             raiz = nuevo_nodo;
+            nuevo_nodo.setEstado(" nodo raiz");
             return;
         }
 
@@ -29,10 +30,10 @@ public class Arbol_binario {
         if (nodo_actual == null) {
             if (nuevo_nodo.getValor() < nodo_padre.getValor()) {
                 nodo_padre.setHijo_izq(nuevo_nodo);
-                nuevo_nodo.setEstado("hijo izq de " + nodo_padre.getValor());
+                nuevo_nodo.setEstado(" hijo izq de " + nodo_padre.getValor());
             } else {
                 nodo_padre.setHijo_der(nuevo_nodo);
-                nuevo_nodo.setEstado("hijo der de " + nodo_padre.getValor());
+                nuevo_nodo.setEstado(" hijo der de " + nodo_padre.getValor());
             }
             
             nuevo_nodo.setPadre(nodo_padre);
@@ -66,9 +67,11 @@ public class Arbol_binario {
         que el sera su nuevo padre */
         if (nodo_hijo_izq != null) {
             nodo_hijo_izq.setPadre(nodo_sustituto);
+            nodo_hijo_izq.setEstado(" hijo izq de " + nodo_sustituto.getValor());
         }
         if (nodo_hijo_der != null) {
             nodo_hijo_der.setPadre(nodo_sustituto);
+            nodo_hijo_der.setEstado(" hijo der de " + nodo_sustituto.getValor());
         }
 
         nodo_padre_sustituto = nodo_padre;
@@ -77,14 +80,19 @@ public class Arbol_binario {
         gun nuevo padre*/
         if (nodo_actual == raiz) {
             raiz = nodo_sustituto;
+            nodo_sustituto.setEstado(" nodo raiz");
             return;
         }
 
         /* sino entonces decirle a mi nuevo padre que yo, soy su nuevo hijo */
         if (nodo_padre_sustituto.getHijo_izq() == nodo_actual) {
             nodo_padre_sustituto.setHijo_izq(nodo_sustituto);
+            nodo_sustituto.setEstado(" hijo izq de " 
+                    + nodo_padre_sustituto.getValor());
         } else {
             nodo_padre_sustituto.setHijo_der(nodo_sustituto);
+            nodo_sustituto.setEstado(" hijo der de " 
+                    + nodo_padre_sustituto.getValor());
         }
     }
 
@@ -102,7 +110,6 @@ public class Arbol_binario {
             if (nodo_actual == null) {
                 return null;
             }
-
             /* la inicializacion de nodo_sustituto varia segun el caso, por 
             ejemplo, al no tener un hijo izquierdo el nodo que se piensa 
             eliminar significa una de dos situaciones, el nodo solo tiene hijo 
@@ -127,6 +134,7 @@ public class Arbol_binario {
             if (nodo_actual == raiz) {
                 nodo_hijo_der.setPadre(null);
                 raiz = nodo_hijo_der;
+                nodo_hijo_der.setEstado(" nodo raiz");
                 return nodo_actual;
             }
 
@@ -134,8 +142,10 @@ public class Arbol_binario {
             es su nuevo hijo */
             if (nodo_padre.getHijo_izq() == nodo_actual) {
                 nodo_padre.setHijo_izq(nodo_hijo_der);
+                nodo_hijo_der.setEstado(" hijo izq de " + nodo_padre.getValor());
             } else {
                 nodo_padre.setHijo_der(nodo_hijo_der);
+                nodo_hijo_der.setEstado(" hijo der de " + nodo_padre.getValor());
             }
 
             /* y a mi hijo le digo quien es su nuevo padre */
@@ -224,7 +234,7 @@ public class Arbol_binario {
             lista_nodos.add(nodo);
         }
 
-        System.out.println(nodo.getValor());
+        System.out.println(nodo.getValor() + nodo.getEstado());
         listar(nodo.getHijo_izq(), lista_nodos);
         listar(nodo.getHijo_der(), lista_nodos);
     }
