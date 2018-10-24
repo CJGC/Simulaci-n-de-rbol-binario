@@ -45,7 +45,7 @@ public class Main {
                 break;
             case 2:
                 leerDatos(nuevo_nodo);
-                avl.insertar(nuevo_nodo,avl.getRaiz(),null);
+                avl._insertar(nuevo_nodo,avl.getRaiz(),null);
                 break;
             case 3:
                 leerDatos(nuevo_nodo);
