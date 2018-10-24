@@ -23,16 +23,17 @@ public class Main {
     private void leerDatos(Nodo nodo) {
         boolean exit = false;
         do {
-            try {
-                Scanner scan = new Scanner(System.in);
-                String num;
-                System.out.print("Entra un numero: ");
-                num = scan.nextLine();
-                nodo.setValor(Integer.parseInt(num));
-                exit = true;
-            } catch (NumberFormatException e) {
-                System.err.println("Por favor ingrese un numero.");
+            Scanner scan = new Scanner(System.in);
+            Integer num;
+            System.out.print("Entra un numero: ");
+            num = scan.nextInt();
+            if(scan.hasNextLine()) {
+                String basura = scan.nextLine();
+                System.err.println(basura + "no es un numero valido.");
+                continue;
             }
+            nodo.setValor(num);
+            exit = true;
         } while (!exit);
     }
 
@@ -67,21 +68,23 @@ public class Main {
     public static void main(String[] args) throws InterruptedException {
         Main m = new Main();
         Arbol_binario ab = new Arbol_binario();
-        Scanner scan = new Scanner(System.in);
-        Integer opt;
         
         do {
-            try {
-                m.menu();
-                String userInput = scan.nextLine();
-                opt = Integer.parseInt(userInput);
-                if (opt == 5) {
-                    break;
-                }
-                m.procesarOpt(opt, ab);
-            } catch (NumberFormatException e) {
-                System.err.println("Por favor ingrese un numero.");
+            Integer opt;
+            m.menu();
+            Scanner scan = new Scanner(System.in);
+            opt = scan.nextInt();
+            
+            if(scan.hasNextLine()) {
+                String basura = scan.nextLine();
+                System.err.println(basura + "no es un numero valido.");
+                continue;
             }
+            if (opt.equals(5)) {
+                break;
+            }
+            m.procesarOpt(opt, ab);
+            
         } while (true);
     }
 
