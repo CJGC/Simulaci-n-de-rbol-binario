@@ -43,6 +43,7 @@ public class AVL extends Arbol_binario {
         if(nodo == getRaiz()) {
             nodo_hijo_der.setPadre(null);
             setRaiz(nodo_hijo_der);
+            nodo_hijo_der.setEstado(" nodo raiz");
             return;
         }
         
@@ -92,6 +93,7 @@ public class AVL extends Arbol_binario {
         if(nodo == getRaiz()) {
             nodo_hijo_izq.setPadre(null);
             setRaiz(nodo_hijo_izq);
+            nodo_hijo_izq.setEstado(" nodo raiz");
             return;
         }
         
@@ -139,18 +141,19 @@ public class AVL extends Arbol_binario {
     public int _insertar(Nodo nuevo_nodo,Nodo nodo_actual,Nodo nodo_padre) {
         if(getRaiz() == null) {
             setRaiz(nuevo_nodo);
+            nuevo_nodo.setEstado(" nodo raiz");
             return 0;
         }
         
         if(nodo_actual == null) {
             if(nuevo_nodo.getValor() < nodo_padre.getValor()) {
                 nodo_padre.setHijo_izq(nuevo_nodo);
-                nuevo_nodo.setEstado(" Hijo izq del nodo "
+                nuevo_nodo.setEstado(" hijo izq de nodo "
                         + nodo_padre.getValor());
             }
             else {
                 nodo_padre.setHijo_der(nuevo_nodo);
-                nuevo_nodo.setEstado(" Hijo der del nodo " 
+                nuevo_nodo.setEstado(" hijo der de nodo " 
                         + nodo_padre.getValor());
             }
             nuevo_nodo.setPadre(nodo_padre);
