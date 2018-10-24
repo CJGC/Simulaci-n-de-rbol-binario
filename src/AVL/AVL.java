@@ -21,6 +21,8 @@ public class AVL extends Arbol_binario {
         if(hijo_izq_de_nodo_derecho != null) {
             hijo_izq_de_nodo_derecho.setPadre(nodo);
             nodo.setHijo_der(hijo_izq_de_nodo_derecho);
+            hijo_izq_de_nodo_derecho.setEstado("hijo der de " 
+                    + nodo.getValor());
         }
         else {
             nodo.setHijo_der(null);
@@ -34,6 +36,7 @@ public class AVL extends Arbol_binario {
         quien es su nuevo hijo */
         nodo.setPadre(nodo_hijo_der);
         nodo_hijo_der.setHijo_izq(nodo);
+        nodo.setEstado("hijo izq de " + nodo_hijo_der.getValor());
         
         /* si el nodo que se roto era raiz significa que no tenia padre por lo
         tanto el nuevo padre es null */
@@ -47,9 +50,11 @@ public class AVL extends Arbol_binario {
         nodo y digale a ese nuevo padre sobre su nuevo hijo */
         if(nodo_padre.getHijo_izq() == nodo) {
             nodo_padre.setHijo_izq(nodo_hijo_der);
+            nodo_hijo_der.setEstado("hijo izq de " + nodo_padre.getValor());
         }
         else {
             nodo_padre.setHijo_der(nodo_hijo_der);
+            nodo_hijo_der.setEstado("hijo der de " + nodo_padre.getValor());
         }
         
         nodo_hijo_der.setPadre(nodo_padre);
@@ -65,6 +70,8 @@ public class AVL extends Arbol_binario {
         if(hijo_der_de_nodo_izquierdo != null) {
             hijo_der_de_nodo_izquierdo.setPadre(nodo);
             nodo.setHijo_izq(hijo_der_de_nodo_izquierdo);
+            hijo_der_de_nodo_izquierdo.setEstado("hijo izq de " 
+                    + nodo.getValor());
         }
         else {
             nodo.setHijo_izq(null);
@@ -78,6 +85,7 @@ public class AVL extends Arbol_binario {
         quien es su nuevo hijo */
         nodo.setPadre(nodo_hijo_izq);
         nodo_hijo_izq.setHijo_der(nodo);
+        nodo.setEstado("hijo der de " + nodo_hijo_izq.getValor());
         
         /* si el nodo que se roto era raiz significa que no tenia padre por lo
         tanto el nuevo padre es null */
@@ -91,9 +99,11 @@ public class AVL extends Arbol_binario {
         nodo y digale a ese nuevo padre sobre su nuevo hijo */
         if(nodo_padre.getHijo_izq() == nodo) {
             nodo_padre.setHijo_izq(nodo_hijo_izq);
+            nodo_hijo_izq.setEstado("hijo izq de " + nodo_padre.getValor());
         }
         else{
             nodo_padre.setHijo_der(nodo_hijo_izq);
+            nodo_hijo_izq.setEstado("hijo der de " + nodo_padre.getValor());
         }
         nodo_hijo_izq.setPadre(nodo_padre);
     }
@@ -126,7 +136,7 @@ public class AVL extends Arbol_binario {
         }
     }
     
-    public int insertar(Nodo nuevo_nodo,Nodo nodo_actual,Nodo nodo_padre) {
+    public int _insertar(Nodo nuevo_nodo,Nodo nodo_actual,Nodo nodo_padre) {
         if(getRaiz() == null) {
             setRaiz(nuevo_nodo);
             return 0;
@@ -135,9 +145,13 @@ public class AVL extends Arbol_binario {
         if(nodo_actual == null) {
             if(nuevo_nodo.getValor() < nodo_padre.getValor()) {
                 nodo_padre.setHijo_izq(nuevo_nodo);
+                nuevo_nodo.setEstado("Hijo izq del nodo "
+                        + nodo_padre.getValor());
             }
             else {
                 nodo_padre.setHijo_der(nuevo_nodo);
+                nuevo_nodo.setEstado("Hijo der del nodo " 
+                        + nodo_padre.getValor());
             }
             nuevo_nodo.setPadre(nodo_padre);
             return 1;
@@ -145,7 +159,7 @@ public class AVL extends Arbol_binario {
         
         if(nuevo_nodo.getValor() < nodo_actual.getValor()) {
             Integer nivel;
-            nivel = insertar(nuevo_nodo,nodo_actual.getHijo_izq(),nodo_actual);
+            nivel = _insertar(nuevo_nodo,nodo_actual.getHijo_izq(),nodo_actual);
             
             Integer nuevo_nivel = nodo_actual.getNivel_izq() + nivel;
             nodo_actual.setNivel_izq(nuevo_nivel);
@@ -169,7 +183,7 @@ public class AVL extends Arbol_binario {
         }
         else {
             Integer nivel;
-            nivel = insertar(nuevo_nodo,nodo_actual.getHijo_der(),nodo_actual);
+            nivel = _insertar(nuevo_nodo,nodo_actual.getHijo_der(),nodo_actual);
             Integer nuevo_nivel = nodo_actual.getNivel_der() + nivel;
             nodo_actual.setNivel_der(nuevo_nivel);
             
