@@ -5,11 +5,9 @@ import java.util.List;
 public class Arbol_binario {
 
     private Nodo raiz;
-    private boolean permitir_insercion;
 
     public Arbol_binario() {
         raiz = null;
-        permitir_insercion = true;
     }
 
     public Nodo getRaiz() {
@@ -20,15 +18,7 @@ public class Arbol_binario {
         this.raiz = raiz;
     }
 
-    public boolean isPermitir_insercion() {
-        return permitir_insercion;
-    }
-
-    public void setPermitir_insercion(boolean permitir_insercion) {
-        this.permitir_insercion = permitir_insercion;
-    }
-
-    public void insertar(Nodo nuevo_nodo, Nodo nodo_actual) {
+    public void insertar(Nodo nuevo_nodo, Nodo nodo_actual, Nodo nodo_padre) {
 
         if (raiz == null) {
             raiz = nuevo_nodo;
@@ -37,6 +27,15 @@ public class Arbol_binario {
 
         /* si nodo actual es null, quiere decir que llegamos a una hoja */
         if (nodo_actual == null) {
+            if (nuevo_nodo.getValor() < nodo_padre.getValor()) {
+                nodo_padre.setHijo_izq(nuevo_nodo);
+                nuevo_nodo.setEstado("hijo izq de " + nodo_padre.getValor());
+            } else {
+                nodo_padre.setHijo_der(nuevo_nodo);
+                nuevo_nodo.setEstado("hijo der de " + nodo_padre.getValor());
+            }
+            
+            nuevo_nodo.setPadre(nodo_padre);
             return;
         }
 
@@ -44,23 +43,11 @@ public class Arbol_binario {
         de un nivel, entonces llame recursivamente al hijo izquierdo de ese 
         nodo actual, en caso contrario al derecho */
         if (nuevo_nodo.getValor() < nodo_actual.getValor()) {
-            insertar(nuevo_nodo, nodo_actual.getHijo_izq());
+            insertar(nuevo_nodo, nodo_actual.getHijo_izq(), nodo_actual);
         } else {
-            insertar(nuevo_nodo, nodo_actual.getHijo_der());
+            insertar(nuevo_nodo, nodo_actual.getHijo_der(), nodo_actual);
         }
 
-        /* permitir insercion es un flag que solo autoriza una vez la inser
-        cion del nuevo nodo, cuando se haya encontrado el nivel en el arbol
-        adecuado */
-        if (permitir_insercion) {
-            if (nuevo_nodo.getValor() < nodo_actual.getValor()) {
-                nodo_actual.setHijo_izq(nuevo_nodo);
-            } else {
-                nodo_actual.setHijo_der(nuevo_nodo);
-            }
-            nuevo_nodo.setPadre(nodo_actual);
-            permitir_insercion = false;
-        }
     }
 
     private void eliminar_nodo(Nodo nodo_actual, Nodo nodo_sustituto) {
