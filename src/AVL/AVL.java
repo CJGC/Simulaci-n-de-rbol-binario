@@ -110,30 +110,40 @@ public class AVL extends Arbol_binario {
         nodo_hijo_izq.setPadre(nodo_padre);
     }
     
+    public void media_rotacion_izq(Nodo nodo) {
+        Nodo hijo_der = nodo.getHijo_der();
+        Nodo hijo_izq = nodo.getHijo_izq();
+    }
+    
+    public void media_rotacion_der(Nodo nodo) {
+        Nodo hijo_der = nodo.getHijo_der();
+        Nodo hijo_izq = nodo.getHijo_izq();
+    }
+    
     public void determinar_tipo_de_balance_izq(Nodo nodo_actual) {
         
-        /* rotacion simple a la derecha */
-        if (nodo_actual.getHijo_izq().getHijo_izq() != null) {
+        /* doble rotacion, primero a la izquierda y luego a la derecha */
+        if (nodo_actual.getHijo_izq().getHijo_der() != null) {
+            //rotacion_izq(nodo_actual.getHijo_izq());
+            /* implementacion de nuevo metodo para realizar rotacion de izq */
             rotacion_der(nodo_actual);
         }
-        
-        /* doble rotacion, primero a la izquierda y luego a la derecha */
+        /* rotacion simple a la derecha */
         else {
-            rotacion_izq(nodo_actual.getHijo_izq());
             rotacion_der(nodo_actual);
         }
     }
     
     public void determinar_tipo_de_balance_der(Nodo nodo_actual) {
         
-        /* rotacion simple a la izquierda */
-        if (nodo_actual.getHijo_der().getHijo_der() != null) {
+        /* doble rotacion, primero a la derecha y luego a la izquierda */
+        if (nodo_actual.getHijo_der().getHijo_izq() != null) {
+            /* implementacion de nuevo metodo para realizar rotacion de der */
+            //rotacion_der(nodo_actual.getHijo_der());
             rotacion_izq(nodo_actual);
         }
-        
-        /* doble rotacion, primero a la derecha y luego a la izquierda */
+        /* rotacion simple a la izquierda */
         else {
-            rotacion_der(nodo_actual.getHijo_der());
             rotacion_izq(nodo_actual);
         }
     }
@@ -205,13 +215,10 @@ public class AVL extends Arbol_binario {
                 return 1;
             }
             
+            System.out.println(nodo_actual.getValor());
             determinar_tipo_de_balance_der(nodo_actual);
         }
         return 0;
-    }
-    
-    private void eliminar_nodo(Nodo nodo_actual, Nodo nodo_sustituto) {
-    
     }
     
     @Override
