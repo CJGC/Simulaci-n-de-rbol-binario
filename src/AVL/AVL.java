@@ -110,22 +110,15 @@ public class AVL extends Arbol_binario {
         nodo_hijo_izq.setPadre(nodo_padre);
     }
     
-    public void media_rotacion_izq(Nodo nodo) {
-        Nodo hijo_der = nodo.getHijo_der();
-        Nodo hijo_izq = nodo.getHijo_izq();
-    }
-    
-    public void media_rotacion_der(Nodo nodo) {
-        Nodo hijo_der = nodo.getHijo_der();
-        Nodo hijo_izq = nodo.getHijo_izq();
-    }
-    
     public void determinar_tipo_de_balance_izq(Nodo nodo_actual) {
         
+        Nodo hijo_izq = nodo_actual.getHijo_izq();
+        Integer nivel_izq = hijo_izq.getNivel_izq();
+        Integer nivel_der = hijo_izq.getNivel_der();
+        
         /* doble rotacion, primero a la izquierda y luego a la derecha */
-        if (nodo_actual.getHijo_izq().getHijo_der() != null) {
-            //rotacion_izq(nodo_actual.getHijo_izq());
-            /* implementacion de nuevo metodo para realizar rotacion de izq */
+        if (nivel_der > nivel_izq) {
+            rotacion_izq(nodo_actual.getHijo_izq());
             rotacion_der(nodo_actual);
         }
         /* rotacion simple a la derecha */
@@ -136,10 +129,13 @@ public class AVL extends Arbol_binario {
     
     public void determinar_tipo_de_balance_der(Nodo nodo_actual) {
         
+        Nodo hijo_der = nodo_actual.getHijo_der();
+        Integer nivel_izq = hijo_der.getNivel_izq();
+        Integer nivel_der = hijo_der.getNivel_der();
+        
         /* doble rotacion, primero a la derecha y luego a la izquierda */
-        if (nodo_actual.getHijo_der().getHijo_izq() != null) {
-            /* implementacion de nuevo metodo para realizar rotacion de der */
-            //rotacion_der(nodo_actual.getHijo_der());
+        if(nivel_izq > nivel_der) {
+            rotacion_der(nodo_actual.getHijo_der());
             rotacion_izq(nodo_actual);
         }
         /* rotacion simple a la izquierda */
