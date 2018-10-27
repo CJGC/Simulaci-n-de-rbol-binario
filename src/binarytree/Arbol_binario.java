@@ -51,7 +51,7 @@ public class Arbol_binario {
 
     }
 
-    private void eliminar_nodo(Nodo nodo_actual, Nodo nodo_sustituto) {
+    protected void eliminar_nodo(Nodo nodo_actual, Nodo nodo_sustituto) {
         Nodo nodo_padre_sustituto;
 
         /* configure el papel del nodo sustituto en el arbol */
