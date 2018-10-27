@@ -154,12 +154,12 @@ public class AVL extends Arbol_binario {
         if(nodo_actual == null) {
             if(nuevo_nodo.getValor() < nodo_padre.getValor()) {
                 nodo_padre.setHijo_izq(nuevo_nodo);
-                nuevo_nodo.setEstado(" hijo izq de nodo "
+                nuevo_nodo.setEstado(" hijo izq de "
                         + nodo_padre.getValor());
             }
             else {
                 nodo_padre.setHijo_der(nuevo_nodo);
-                nuevo_nodo.setEstado(" hijo der de nodo " 
+                nuevo_nodo.setEstado(" hijo der de " 
                         + nodo_padre.getValor());
             }
             nuevo_nodo.setPadre(nodo_padre);
@@ -211,7 +211,6 @@ public class AVL extends Arbol_binario {
                 return 1;
             }
             
-            System.out.println(nodo_actual.getValor());
             determinar_tipo_de_balance_der(nodo_actual);
         }
         return 0;
