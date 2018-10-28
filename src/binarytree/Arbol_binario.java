@@ -51,7 +51,7 @@ public class Arbol_binario {
 
     }
 
-    protected void eliminar_nodo(Nodo nodo_actual, Nodo nodo_sustituto) {
+    protected void configurar_nodo(Nodo nodo_actual, Nodo nodo_sustituto) {
         Nodo nodo_padre_sustituto;
 
         /* configure el papel del nodo sustituto en el arbol */
@@ -178,7 +178,7 @@ public class Arbol_binario {
 
             /* sino quiere decir que debo configurar a mi nodo sustituto antes
             de morir */
-            eliminar_nodo(nodo_actual, nodo_sustituto);
+            configurar_nodo(nodo_actual, nodo_sustituto);
             return nodo_actual;
         }
 
@@ -189,7 +189,7 @@ public class Arbol_binario {
 
         /* caso 4 el nodo sustituto tiene un hijo izquierdo */
         eliminar(nodo, nodo_sustituto, nodo_sustituto.getHijo_izq());
-        eliminar_nodo(nodo_actual, nodo_sustituto);
+        configurar_nodo(nodo_actual, nodo_sustituto);
         return nodo_actual;
     }
 
