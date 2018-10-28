@@ -35,7 +35,7 @@ public class Arbol_binario {
                 nodo_padre.setHijo_der(nuevo_nodo);
                 nuevo_nodo.setEstado(" hijo der de " + nodo_padre.getValor());
             }
-            
+
             nuevo_nodo.setPadre(nodo_padre);
             return;
         }
@@ -87,11 +87,11 @@ public class Arbol_binario {
         /* sino entonces decirle a mi nuevo padre que yo, soy su nuevo hijo */
         if (nodo_padre_sustituto.getHijo_izq() == nodo_actual) {
             nodo_padre_sustituto.setHijo_izq(nodo_sustituto);
-            nodo_sustituto.setEstado(" hijo izq de " 
+            nodo_sustituto.setEstado(" hijo izq de "
                     + nodo_padre_sustituto.getValor());
         } else {
             nodo_padre_sustituto.setHijo_der(nodo_sustituto);
-            nodo_sustituto.setEstado(" hijo der de " 
+            nodo_sustituto.setEstado(" hijo der de "
                     + nodo_padre_sustituto.getValor());
         }
     }
