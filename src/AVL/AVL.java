@@ -110,12 +110,12 @@ public class AVL extends Arbol_binario {
     public void determinar_tipo_de_balance_izq(Nodo nodo_actual) {
 
         Nodo hijo_izq = nodo_actual.getHijo_izq();
-        Integer nivel_izq = hijo_izq.getNivel_izq();
-        Integer nivel_der = hijo_izq.getNivel_der();
+        Integer nivel_izq = nodo_actual.getNivel_izq();
+        Integer nivel_der = nodo_actual.getNivel_der();
 
         /* doble rotacion, primero a la izquierda y luego a la derecha */
         if (nivel_der > nivel_izq) {
-            rotacion_izq(nodo_actual.getHijo_izq());
+            rotacion_izq(hijo_izq);
             rotacion_der(nodo_actual);
         } /* rotacion simple a la derecha */ else {
             rotacion_der(nodo_actual);
@@ -125,12 +125,12 @@ public class AVL extends Arbol_binario {
     public void determinar_tipo_de_balance_der(Nodo nodo_actual) {
 
         Nodo hijo_der = nodo_actual.getHijo_der();
-        Integer nivel_izq = hijo_der.getNivel_izq();
-        Integer nivel_der = hijo_der.getNivel_der();
+        Integer nivel_izq = nodo_actual.getNivel_izq();
+        Integer nivel_der = nodo_actual.getNivel_der();
 
         /* doble rotacion, primero a la derecha y luego a la izquierda */
         if (nivel_izq > nivel_der) {
-            rotacion_der(nodo_actual.getHijo_der());
+            rotacion_der(hijo_der);
             rotacion_izq(nodo_actual);
         } /* rotacion simple a la izquierda */ else {
             rotacion_izq(nodo_actual);
@@ -206,10 +206,19 @@ public class AVL extends Arbol_binario {
             factor_de_balance
                     = calculo_factor_de_balance_izq(nodo_actual, nivel);
 
-            if (factor_de_balance.equals(1) || factor_de_balance.equals(0)) {
-                return factor_de_balance;
+            /* si el valor retornado por el calculo de la balance es 1 o 0
+            significa que el arbol esta balanceado */
+            if (!factor_de_balance.equals(1) && !factor_de_balance.equals(0)) {
+                determinar_tipo_de_balance_der(nodo_actual);
+                return 0;
             }
-            determinar_tipo_de_balance_izq(nodo_actual);
+            
+            /* indicar al nodo padre que aumente o no */
+            if (nivel.equals(1)) {
+                return 1;
+            } else {
+                return 0;
+            }
         } else {
             Integer nivel;
             nivel = _insertar(nuevo_nodo, nodo_actual.getHijo_der(),
@@ -219,12 +228,20 @@ public class AVL extends Arbol_binario {
             factor_de_balance
                     = calculo_factor_de_balance_der(nodo_actual, nivel);
 
-            if (factor_de_balance.equals(1) || factor_de_balance.equals(0)) {
-                return factor_de_balance;
+            /* si el valor retornado por el calculo de la balance es 1 o 0
+            significa que el arbol esta balanceado */
+            if (!factor_de_balance.equals(1) && !factor_de_balance.equals(0)) {
+                determinar_tipo_de_balance_der(nodo_actual);
+                return 0;
             }
-            determinar_tipo_de_balance_der(nodo_actual);
+            
+            /* indicar al nodo padre que aumente o no */
+            if (nivel.equals(1)) {
+                return 1;
+            } else {
+                return 0;
+            }
         }
-        return 0;
     }
 
     @Override
