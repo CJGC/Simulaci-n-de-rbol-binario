@@ -1,14 +1,12 @@
 package AVL;
-
 import binarytree.Nodo;
 import java.util.Scanner;
-
 /**
  *
  * @author cj
  */
 public class Main {
-
+    
     public void menu() {
         System.out.println("\n============Arbol AVL============");
         System.out.println("\t1) Imprimir arbol");
@@ -20,7 +18,7 @@ public class Main {
         System.out.println();
         System.out.print("Entra numero de opcion: ");
     }
-
+    
     private void leerDatos(Nodo nodo) {
         boolean exit = false;
         do {
@@ -36,8 +34,8 @@ public class Main {
             }
         } while (!exit);
     }
-
-    public void procesarOpt(Integer opt, AVL avl) {
+    
+    public void procesarOpt(Integer opt,AVL avl) {
         Nodo nuevo_nodo = new Nodo();
 
         switch (opt) {
@@ -46,11 +44,11 @@ public class Main {
                 break;
             case 2:
                 leerDatos(nuevo_nodo);
-                avl._insertar(nuevo_nodo, avl.getRaiz(), null);
+                avl._insertar(nuevo_nodo,avl.getRaiz(),null);
                 break;
             case 3:
                 leerDatos(nuevo_nodo);
-                avl.eliminar(nuevo_nodo, null, null);
+                avl.eliminar(nuevo_nodo, avl.getRaiz(), null, false);
                 break;
             case 4:
                 leerDatos(nuevo_nodo);
@@ -60,7 +58,7 @@ public class Main {
                 System.out.println("Opcion no valida");
         }
     }
-
+    
     /**
      * @param args the command line arguments
      * @throws java.lang.InterruptedException
