@@ -214,7 +214,7 @@ public class AVL extends Arbol_binario {
             }
             
             /* indicar al nodo padre que aumente o no */
-            if (nivel.equals(1)) {
+            if (nivel.equals(1) && !factor_de_balance.equals(0)) {
                 return 1;
             } else {
                 return 0;
@@ -236,7 +236,7 @@ public class AVL extends Arbol_binario {
             }
             
             /* indicar al nodo padre que aumente o no */
-            if (nivel.equals(1)) {
+            if (nivel.equals(1) && !factor_de_balance.equals(0)) {
                 return 1;
             } else {
                 return 0;
