@@ -259,7 +259,7 @@ public class AVL extends Arbol_binario {
         nodo_sustituto.setHijo_izq(nodo_hijo_izq);
         nodo_sustituto.setHijo_der(nodo_hijo_der);
         nodo_sustituto.setNivel_izq(nivel_izq);
-        nodo_sustituto.setNivel_izq(nivel_der);
+        nodo_sustituto.setNivel_der(nivel_der);
 
         /* los nuevos hijos del nodo sustituto (si existen) deben saber 
         que el sera su nuevo padre */
@@ -295,6 +295,218 @@ public class AVL extends Arbol_binario {
         }
     }
 
+    private Integer derecho_inmediato(Nodo nodo_actual) {
+        Nodo nodo_padre = nodo_actual.getPadre();
+        Nodo nodo_hijo_der = nodo_actual.getHijo_der();
+
+        /* si soy raiz significa que no tengo padre, por lo tanto solo le
+        digo a mi hijo derecho que el sera raiz*/
+        if (nodo_actual == getRaiz()) {
+            nodo_hijo_der.setPadre(null);
+            setRaiz(nodo_hijo_der);
+            nodo_hijo_der.setEstado(" nodo raiz");
+            return 0; /* si no tenia padre entonces no hay que notificarle
+                        sobre el nuevo indice de nivel a nadie */
+        }
+
+        /* sino soy raiz le notifico a mi padre que voy a morir y quien
+        es su nuevo hijo */
+        if (nodo_padre.getHijo_izq() == nodo_actual) {
+            nodo_padre.setHijo_izq(nodo_hijo_der);
+            nodo_hijo_der.setEstado(" hijo izq de " + nodo_padre.getValor());
+        } else {
+            nodo_padre.setHijo_der(nodo_hijo_der);
+            nodo_hijo_der.setEstado(" hijo der de " + nodo_padre.getValor());
+        }
+
+        /* y a mi hijo le digo quien es su nuevo padre */
+        nodo_hijo_der.setPadre(nodo_padre);
+        return -1; /* si tenia padre, indudablemente el indice de nivel se de
+                    crementa*/
+    }
+    
+    private Integer proceso_de_balance_izq(Nodo nodo_actual, Integer nivel) {
+        Integer factor_de_balance = 
+                calculo_factor_de_balance_izq(nodo_actual, nivel);
+
+        if (!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {
+            determinar_tipo_de_balance_izq(nodo_actual);
+            return 0;
+        }
+
+        if (nivel.equals(-1) && !factor_de_balance.equals(0)) {
+            return -1;
+        }
+        else {
+            return 0;
+        }
+    }
+    
+    private Integer proceso_de_balance_der(Nodo nodo_actual, Integer nivel) {
+        /* seccion de balance */
+        Integer factor_de_balance =
+            calculo_factor_de_balance_der(nodo_actual, nivel);
+
+        /* si el factor de balance no es 1 o 0 sigifica que el arbol
+        esta desbalanceado */
+        if(!factor_de_balance.equals(0) && 
+                !factor_de_balance.equals(1)) {
+            determinar_tipo_de_balance_der(nodo_actual);
+            return 0;
+        }
+
+        /* indicar al nodo padre que decremente o no */
+        if (nivel.equals(-1) && !factor_de_balance.equals(0)) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+    
+    public Object eliminar(Nodo nodo, Nodo nodo_objetivo, Nodo nodo_actual,
+                Nodo nodo_sustituto, boolean nodo_encontrado) {
+        if (getRaiz() == null) {
+            System.out.println("El arbol esta vacio.");
+            return 0;
+        }
+
+        /* busqueda para saber si el nodo solicitado existe */
+        if (!nodo_encontrado) {
+            
+            if (nodo_actual == null) {
+                System.out.println("Nodo con valor \"" + nodo.getValor() 
+                        + "\" no existe.");
+                return null;
+            }
+            
+            if (nodo.getValor() < nodo_actual.getValor()) {
+                Object nivel;
+                nivel = eliminar(nodo, nodo_actual.getHijo_izq(), nodo_sustituto,
+                        nodo_encontrado);
+                
+                /* si nivel es null significa que el nodo solicitado no fue 
+                encontrado en el arbol */
+                if (nivel == null) {
+                    return nivel;
+                }
+                
+                /* seccion de balance */
+                Integer nuevo_indice_de_nivel =
+                    proceso_de_balance_izq(nodo_actual, (Integer) nivel);
+                return nuevo_indice_de_nivel;
+                
+            } else if (nodo.getValor() > nodo_actual.getValor()) {
+                Object nivel;
+                nivel = eliminar(nodo, nodo_actual.getHijo_der(), nodo_sustituto,
+                        nodo_encontrado);
+                
+                /* si nivel es null significa que el nodo solicitado no fue 
+                encontrado en el arbol */
+                if (nivel == null) {
+                    return nivel;
+                }
+                
+                /* seccion de balance */
+                Integer nuevo_indice_de_nivel =
+                    proceso_de_balance_der(nodo_actual,(Integer) nivel);
+                return nuevo_indice_de_nivel;
+            }
+            
+            System.out.println("Nodo con valor \"" + nodo.getValor() 
+                    + "\" fue eliminado correctamente.");
+            
+            /* caso especial (hijo derecho sustituto inmediato) */
+            if (nodo_actual.getHijo_izq() == null &&
+                    nodo_actual.getHijo_der() != null) {
+                Object nivel;
+                nivel = derecho_inmediato(nodo_actual);
+                return nivel;
+            }
+            
+            nodo_encontrado = true;
+            Object nivel;
+            nivel = eliminar(nodo, nodo_actual, nodo_actual.getHijo_izq(), 
+                    nodo_sustituto, nodo_encontrado);
+            
+            Integer nuevo_indice_de_nivel =
+                proceso_de_balance_izq(nodo_actual, (Integer) nivel);
+            return nuevo_indice_de_nivel;
+        }
+        
+        /* caso 1 (caso base) nodo hoja */
+        if (nodo_actual.getHijo_izq() == null && 
+                nodo_actual.getHijo_der() == null) {
+
+            /* si el nodo actual es raiz y no tiene hijos configurelo a null*/
+            if (nodo_actual == getRaiz()) {
+                setRaiz(null);
+                return 0;
+                /* valor irrelevante ya que el arbol esta completamente vacio*/
+            }
+            
+            /* si el nodo objetivo es raiz */
+            if (nodo_objetivo == getRaiz()) {
+                /* implementacion pendiente */
+            }
+            
+            /* decirle al padre de nodo objetivo que ya no es mas su hijo */
+            Nodo nodo_padre_objetivo = nodo_objetivo.getPadre();
+            
+            if (nodo_padre_objetivo.getHijo_izq() == nodo_objetivo) {
+                nodo_padre_objetivo.setHijo_izq(nodo_actual);
+            } else {
+                nodo_padre_objetivo.setHijo_der(nodo_actual);
+            }
+
+            /* si mi hijo sustituto soy yo mismo significa que el nodo que se va
+            a eliminar en el arbol es un nodo hoja, entonces simplemente muero*/
+            if (nodo_actual == nodo_sustituto) {
+                return -1;
+                /* como yo desaparezco como nodo hoja significa que 
+                            ese nivel desaparece, por lo tanto mi padre debe
+                            decrementar su indice de nivel al cual pertenezco */
+            }
+
+            /* sino quiere decir que debo configurar a mi nodo sustituto antes
+            de morir, ademas debo realizar un analisis para comprobar
+            posibles desbalances */
+            
+            configurar_nodo(nodo_actual, nodo_sustituto);
+            /* se debe controlar el retorno */
+            return -1;
+        }
+        
+        /* caso 2 tengo hijo derecho */
+        if (nodo_actual.getHijo_der() != null) {
+            Object nivel;
+            nivel = eliminar(nodo, nodo_objetivo, nodo_actual.getHijo_der(), 
+                    nodo_sustituto, nodo_encontrado);
+            Integer nuevo_indice_de_nivel =
+                    proceso_de_balance_der(nodo_actual, (Integer) nivel);
+            return nuevo_indice_de_nivel;
+        }
+        
+        /* caso 3 tengo solamente un hijo izq */
+        Object nivel;
+        nivel = eliminar(nodo, nodo_actual, nodo_actual.getHijo_izq(), 
+                nodo_sustituto, nodo_encontrado);
+        
+        Nodo nodo_padre_antiguo_de_actual = nodo_actual.getPadre();
+        String antiguo_estado_de_actual = nodo_actual.getEstado();
+        
+        if (antiguo_estado_de_actual.equals(" hijo izq de "
+                + nodo_padre_antiguo_de_actual.getValor())) {
+            nodo_sustituto = nodo_padre_antiguo_de_actual.getHijo_izq();
+        }
+        else {
+            nodo_sustituto = nodo_padre_antiguo_de_actual.getHijo_der();
+        }
+        
+        Integer nuevo_indice_de_nivel =
+                proceso_de_balance_izq(nodo_sustituto, (Integer) nivel);
+        return nuevo_indice_de_nivel;
+    }
+    
     public Object eliminar(Nodo nodo, Nodo nodo_actual, Nodo nodo_sustituto,
             boolean nodo_encontrado) {
 
@@ -337,8 +549,8 @@ public class AVL extends Arbol_binario {
                 }
                 
                 /* indicar al nodo padre que decremente o no */
-                if (nivel.equals(1)) {
-                    return 1;
+                if (nivel.equals(-1) && !factor_de_balance.equals(0)) {
+                    return -1;
                 } else {
                     return 0;
                 }
@@ -359,7 +571,7 @@ public class AVL extends Arbol_binario {
                     calculo_factor_de_balance_der(nodo_actual, (Integer) nivel);
                 
                 /* si el factor de balance no es 1 o 0 sigifica que el arbol
-                esta desbalanceado */                
+                esta desbalanceado */
                 if(!factor_de_balance.equals(0) && 
                         !factor_de_balance.equals(1)) {
                     determinar_tipo_de_balance_der(nodo_actual);
@@ -367,8 +579,8 @@ public class AVL extends Arbol_binario {
                 }
                 
                 /* indicar al nodo padre que decremente o no */
-                if (nivel.equals(1)) {
-                    return 1;
+                if (nivel.equals(-1) && !factor_de_balance.equals(0)) {
+                    return -1;
                 } else {
                     return 0;
                 }
@@ -425,6 +637,7 @@ public class AVL extends Arbol_binario {
             return -1;
             /* si tenia padre entonces significa que un nivel del 
                         arbol decrementa en esa rama */
+            
         }
 
         /* caso 2 (caso base) el sustituto es una hoja */
@@ -457,13 +670,12 @@ public class AVL extends Arbol_binario {
             }
 
             /* sino quiere decir que debo configurar a mi nodo sustituto antes
-            de morir */
+            de morir, ademas debo realizar un analisis para comprobar
+            posibles desbalances */
+            
             configurar_nodo(nodo_actual, nodo_sustituto);
+            /* se debe controlar el retorno */
             return -1;
-            /* como nodo sustituto esta cambiando de nivel, significa
-                        que el antiguo padre del nodo sustituto debe saber que 
-                        su hijo ha dejado de serlo, por lo tanto se pierde ese 
-                        nivel */
         }
 
         /* caso 3 el nodo sustituto tiene un hijo derecho */
@@ -474,17 +686,21 @@ public class AVL extends Arbol_binario {
             Integer factor_de_balance
                     = calculo_factor_de_balance_der(nodo_sustituto, 
                             (Integer) nivel);
-
-            /* si el factor de balance es 1 significa que hubo un nivel que desa
-            parecio y por lo tanto el padre debe decrementar ese indice */
-            if (factor_de_balance.equals(1)) {
-                return -1;
-            } else if (factor_de_balance.equals(0)) {
+            
+            /* si el factor de balance no es 1 o 0 sigifica que el arbol
+            esta desbalanceado */
+            if (!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {
+                determinar_tipo_de_balance_der(nodo_actual);
                 return 0;
             }
-
-            determinar_tipo_de_balance_der(nodo_actual);
-            return 0;
+            
+            /* indicar al nodo padre que decremente o no */
+            if (nivel.equals(-1) && !factor_de_balance.equals(0)) {
+                return -1;
+            }
+            else {
+                return 0;
+            }
         }
 
         /* caso 4 el nodo sustituto tiene un hijo izquierdo */
@@ -521,13 +737,15 @@ public class AVL extends Arbol_binario {
 
         /* si el factor de balance es 1 significa que hubo un nivel que desapare
         cio y por lo tanto el padre debe decrementar ese indice */
-        if (factor_de_balance.equals(1)) {
-            return -1;
-        } else if (factor_de_balance.equals(0)) {
+        if (!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {
+            determinar_tipo_de_balance_izq(nodo_que_remplazo_sustituto);
             return 0;
         }
-
-        determinar_tipo_de_balance_izq(nodo_que_remplazo_sustituto);
-        return 0;
+        
+        if (nivel.equals(-1) && !factor_de_balance.equals(0)) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }
