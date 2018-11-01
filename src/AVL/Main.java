@@ -48,7 +48,7 @@ public class Main {
                 break;
             case 3:
                 leerDatos(nuevo_nodo);
-                avl.eliminar(nuevo_nodo, avl.getRaiz(), null, false);
+                avl.eliminar(nuevo_nodo, null, avl.getRaiz(), false);
                 break;
             case 4:
                 leerDatos(nuevo_nodo);
