@@ -361,6 +361,28 @@ public class AVL extends Arbol_binario {
         }
     }
     
+    private Nodo encontrar_sustituto(Nodo nodo_actual) {
+        Nodo nodo_sustituto;
+        /* si nodo actual fue raiz */
+        if (nodo_actual.getPadre() != null) {
+            Nodo antiguo_nodo_padre_actual = nodo_actual.getPadre();
+            String antiguo_estado_nodo_actual = nodo_actual.getEstado();
+
+            /* nodo que sustituto al nodo actual de ese nivel */
+            if (antiguo_estado_nodo_actual.equals(" hijo izq de " 
+                    + antiguo_nodo_padre_actual.getValor())) {
+                nodo_sustituto = antiguo_nodo_padre_actual.getHijo_izq();
+            } else {
+                nodo_sustituto = antiguo_nodo_padre_actual.getHijo_der();
+            }
+
+        } else {
+            nodo_sustituto = nodo_actual.getHijo_izq().getPadre();
+        }
+        
+        return nodo_sustituto;
+    }
+    
     public Object eliminar(Nodo nodo, Nodo nodo_objetivo, Nodo nodo_actual, 
             boolean nodo_encontrado) {
         
@@ -452,25 +474,8 @@ public class AVL extends Arbol_binario {
                     nodo_encontrado);
             Nodo nodo_sustituto;
             
-            System.out.println(nodo_actual.getValor());
-            
-            /* si nodo actual fue raiz */
-            if (nodo_actual.getPadre() != null) {
-                Nodo antiguo_nodo_padre_actual = nodo_actual.getPadre();
-                String antiguo_estado_nodo_actual = nodo_actual.getEstado();
-
-                /* nodo que sustituto al nodo actual de ese nivel */
-                if (antiguo_estado_nodo_actual.equals(" hijo izq de " 
-                        + antiguo_nodo_padre_actual.getValor())) {
-                    nodo_sustituto = antiguo_nodo_padre_actual.getHijo_izq();
-                } else {
-                    nodo_sustituto = antiguo_nodo_padre_actual.getHijo_der();
-                }
-                
-            } else {
-                nodo_sustituto = nodo_actual.getHijo_izq().getPadre();
-            }
-            
+            /* encontrar al nodo que sustituyo a nodo actual */
+            nodo_sustituto = encontrar_sustituto(nodo_actual);
             Integer nuevo_indice_de_nivel =
                 proceso_de_balance_der(nodo_sustituto, (Integer) nivel);
             return nuevo_indice_de_nivel;
@@ -507,20 +512,10 @@ public class AVL extends Arbol_binario {
         nivel = eliminar(nodo, nodo_actual, nodo_actual.getHijo_izq(),
                 nodo_encontrado);
         
-        Nodo nodo_padre_antiguo_de_actual = nodo_actual.getPadre();
-        String antiguo_estado_de_actual = nodo_actual.getEstado();
-        configurar_nodo(nodo_objetivo, nodo_actual);
-        
-        /* debemos conocer quien fue nodo sustituto de nodo actual en este
-        nivel */
         Nodo nodo_sustituto;
-        if (antiguo_estado_de_actual.equals(" hijo izq de "
-                + nodo_padre_antiguo_de_actual.getValor())) {
-            nodo_sustituto = nodo_padre_antiguo_de_actual.getHijo_izq();
-        }
-        else {
-            nodo_sustituto = nodo_padre_antiguo_de_actual.getHijo_der();
-        }
+        nodo_sustituto = encontrar_sustituto(nodo_actual);
+        
+        configurar_nodo(nodo_objetivo, nodo_actual);
         
         Integer nuevo_indice_de_nivel =
                 proceso_de_balance_izq(nodo_sustituto, (Integer) nivel);
