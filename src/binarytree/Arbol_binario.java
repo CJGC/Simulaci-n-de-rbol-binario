@@ -234,7 +234,8 @@ public class Arbol_binario {
             lista_nodos.add(nodo);
         }
 
-        System.out.println(nodo.getValor() + nodo.getEstado());
+        System.out.println(nodo.getValor() + nodo.getEstado() + " Nivel izq: "
+            + nodo.getNivel_izq() + " Nivel der: " + nodo.getNivel_der());
         listar(nodo.getHijo_izq(), lista_nodos);
         listar(nodo.getHijo_der(), lista_nodos);
     }
