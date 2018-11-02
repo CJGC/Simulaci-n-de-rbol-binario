@@ -12,7 +12,7 @@ public class AVL extends Arbol_binario {
         super();
     }
 
-    public void rotacion_izq(Nodo nodo) {
+    public void rotacion_izq(Nodo nodo, String rotacion_para) {
         Nodo nodo_padre = nodo.getPadre();
         Nodo nodo_hijo_der = nodo.getHijo_der();
         Nodo hijo_izq_de_nodo_derecho = nodo_hijo_der.getHijo_izq();
@@ -30,9 +30,15 @@ public class AVL extends Arbol_binario {
 
         /* actualizacion de indices de nivel */
         nodo.setNivel_der(nodo_hijo_der.getNivel_izq());
-        nodo_hijo_der.setNivel_izq(nodo.getNivel_izq() + 1);
-
-        /* decirle al nodo quien es su nuevo padre y al nuevo padre decirle 
+        
+        if (rotacion_para.equals("insercion")) {
+            nodo_hijo_der.setNivel_izq(nodo.getNivel_izq() + 1);
+        }
+        else {
+            nodo_hijo_der.setNivel_izq(nodo_hijo_der.getNivel_izq() + 1);
+        }
+        
+            /* decirle al nodo quien es su nuevo padre y al nuevo padre decirle 
         quien es su nuevo hijo */
         nodo.setPadre(nodo_hijo_der);
         nodo_hijo_der.setHijo_izq(nodo);
@@ -60,7 +66,7 @@ public class AVL extends Arbol_binario {
         nodo_hijo_der.setPadre(nodo_padre);
     }
 
-    public void rotacion_der(Nodo nodo) {
+    public void rotacion_der(Nodo nodo, String rotacion_para) {
         Nodo nodo_padre = nodo.getPadre();
         Nodo nodo_hijo_izq = nodo.getHijo_izq();
         Nodo hijo_der_de_nodo_izquierdo = nodo_hijo_izq.getHijo_der();
@@ -76,9 +82,13 @@ public class AVL extends Arbol_binario {
             nodo.setHijo_izq(null);
         }
 
-        /* actualizacion de indices de nivel */
         nodo.setNivel_izq(nodo_hijo_izq.getNivel_der());
-        nodo_hijo_izq.setNivel_der(nodo.getNivel_der() + 1);
+        /* actualizacion de indices de nivel */
+        if (rotacion_para.equals("insercion")) {
+            nodo_hijo_izq.setNivel_der(nodo.getNivel_der() + 1);
+        } else {
+            nodo_hijo_izq.setNivel_der(nodo_hijo_izq.getNivel_der() + 1);
+        }
 
         /* decirle al nodo quien es su nuevo padre y al nuevo padre decirle 
         quien es su nuevo hijo */
@@ -115,10 +125,10 @@ public class AVL extends Arbol_binario {
         
         /* doble rotacion, primero a la izquierda y luego a la derecha */
         if (nivel_der > nivel_izq) {
-            rotacion_izq(hijo_izq);
-            rotacion_der(nodo_actual);
+            rotacion_izq(hijo_izq, "insercion");
+            rotacion_der(nodo_actual, "insercion");
         } /* rotacion simple a la derecha */ else {
-            rotacion_der(nodo_actual);
+            rotacion_der(nodo_actual, "insercion");
         }
     }
 
@@ -130,10 +140,10 @@ public class AVL extends Arbol_binario {
         
         /* doble rotacion, primero a la derecha y luego a la izquierda */
         if (nivel_izq > nivel_der) {
-            rotacion_der(hijo_der);
-            rotacion_izq(nodo_actual);
+            rotacion_der(hijo_der, "insercion");
+            rotacion_izq(nodo_actual, "insercion");
         } /* rotacion simple a la izquierda */ else {
-            rotacion_izq(nodo_actual);
+            rotacion_izq(nodo_actual, "insercion");
         }
     }
 
@@ -329,7 +339,9 @@ public class AVL extends Arbol_binario {
         
         /* rotacion a la derecha */
         if (nivel_der > nivel_izq) {
-            rotacion_der(nodo_actual.getHijo_der());
+            /* podria ser necesario la implementacion de un nuevo metodo de 
+            rotacion*/
+            rotacion_izq(nodo_actual, "eliminacion");
         }
     }
     
@@ -339,7 +351,7 @@ public class AVL extends Arbol_binario {
         
         /* rotacion a la izquierda */
         if (nivel_izq > nivel_der) {
-            rotacion_izq(nodo_actual.getHijo_izq());
+            rotacion_der(nodo_actual, "eliminacion");
         }
     }
     
@@ -352,7 +364,7 @@ public class AVL extends Arbol_binario {
             return 0;
         }
 
-        if (nivel.equals(-1) && !factor_de_balance.equals(0)) {
+        if (factor_de_balance.equals(0)) {
             return -1;
         }
         else {
@@ -374,7 +386,7 @@ public class AVL extends Arbol_binario {
         }
 
         /* indicar al nodo padre que decremente o no */
-        if (nivel.equals(-1) && !factor_de_balance.equals(0)) {
+        if (factor_de_balance.equals(0)) {
             return -1;
         } else {
             return 0;
@@ -383,7 +395,8 @@ public class AVL extends Arbol_binario {
     
     private Nodo encontrar_sustituto(Nodo nodo_actual) {
         Nodo nodo_sustituto;
-        /* si nodo actual fue raiz */
+        
+        /* si nodo actual no es raiz */
         if (nodo_actual.getPadre() != null) {
             Nodo antiguo_nodo_padre_actual = nodo_actual.getPadre();
             String antiguo_estado_nodo_actual = nodo_actual.getEstado();
@@ -395,10 +408,8 @@ public class AVL extends Arbol_binario {
             } else {
                 nodo_sustituto = antiguo_nodo_padre_actual.getHijo_der();
             }
-
-        }
-        else {
-            nodo_sustituto = nodo_actual.getHijo_izq().getPadre();
+        } /* si fue raiz entonces el sustituto es raiz */ else {
+            nodo_sustituto = getRaiz();
         }
         
         return nodo_sustituto;
@@ -432,7 +443,7 @@ public class AVL extends Arbol_binario {
                     return nivel;
                 }
                 
-                /* seccion de balance */
+                /* seccion de balance para el nodo_actual de esa iteracion */
                 Integer nuevo_indice_de_nivel =
                     proceso_de_balance_izq(nodo_actual, (Integer) nivel);
                 return nuevo_indice_de_nivel;
@@ -448,7 +459,7 @@ public class AVL extends Arbol_binario {
                     return nivel;
                 }
                 
-                /* seccion de balance */
+                /* seccion de balance para el nodo_actual de esa iteracion */
                 Integer nuevo_indice_de_nivel =
                     proceso_de_balance_der(nodo_actual,(Integer) nivel);
                 return nuevo_indice_de_nivel;
@@ -457,15 +468,7 @@ public class AVL extends Arbol_binario {
             /* una vez el nodo haya sido encontrado hacemos lo siguiente */
             System.out.println("Nodo con valor \"" + nodo.getValor() 
                     + "\" fue eliminado correctamente.");
-            
-            /* caso especial (hijo derecho sustituto inmediato) */
-            if (nodo_actual.getHijo_izq() == null &&
-                    nodo_actual.getHijo_der() != null) {
-                Object nivel;
-                nivel = derecho_inmediato(nodo_actual);
-                return nivel;
-            }
-            
+
             /* nodo a eliminar es una hoja */
             if (nodo_actual.getHijo_izq() == null &&
                     nodo_actual.getHijo_der() == null) {
@@ -488,6 +491,15 @@ public class AVL extends Arbol_binario {
                 return -1;
             }
             
+            /* caso especial (hijo derecho sustituto inmediato) */
+            if (nodo_actual.getHijo_izq() == null &&
+                    nodo_actual.getHijo_der() != null) {
+                System.out.println("No tiene hijo izquierdo");
+                Object nivel;
+                nivel = derecho_inmediato(nodo_actual);
+                return nivel;
+            }
+            
             nodo_encontrado = true;
             Object nivel;
             
@@ -498,9 +510,6 @@ public class AVL extends Arbol_binario {
             
             /* encontrar al nodo que sustituyo a nodo actual */
             nodo_sustituto = encontrar_sustituto(nodo_actual);
-            System.out.println(nodo_sustituto.getValor() 
-                    + "Nivel izq: " + nodo_sustituto.getNivel_izq()
-                    + "Nivel der: " + nodo_sustituto.getNivel_izq());
             Integer nuevo_indice_de_nivel =
                 proceso_de_balance_izq(nodo_sustituto, (Integer) nivel);
             return nuevo_indice_de_nivel;
