@@ -6,6 +6,7 @@ package binarytree;
  */
 public class Nodo {
 
+    private Integer profundidad;
     private Integer nivel_izq;
     private Integer nivel_der;
     private String estado;
@@ -15,6 +16,7 @@ public class Nodo {
     private Nodo padre;
 
     public Nodo() {
+        profundidad = 0;
         nivel_izq = 0;
         nivel_der = 0;
         estado = "";
@@ -25,6 +27,7 @@ public class Nodo {
     }
 
     public Nodo(Integer valor) {
+        profundidad = 0;
         nivel_izq = 0;
         nivel_der = 0;
         estado = "";
@@ -34,6 +37,12 @@ public class Nodo {
         padre = null;
     }
 
+    public Integer getProfundidad() {
+        return profundidad;
+    }
+    public void setProfundidad(Integer profundidad) {
+        this.profundidad = profundidad;
+    }
     public Integer getNivel_izq() {
         return nivel_izq;
     }
