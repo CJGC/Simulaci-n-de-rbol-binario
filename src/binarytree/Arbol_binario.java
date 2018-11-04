@@ -18,14 +18,14 @@ public class Arbol_binario {
         this.raiz = raiz;
     }
 
-    public void insertar(Nodo nuevo_nodo, Nodo nodo_actual, Nodo nodo_padre) {
-
-        if (raiz == null) {
-            raiz = nuevo_nodo;
-            nuevo_nodo.setEstado(" nodo raiz");
-            return;
-        }
-
+    public void insertar(Nodo nuevo_nodo, Nodo nodo_actual, Nodo nodo_padre) {                                                                                                                  
+                                                                                                                                                                                                
+        if (raiz == null) {                                                                                                                                                                     
+            raiz = nuevo_nodo;                                                                                                                                                                  
+            nuevo_nodo.setEstado(" nodo raiz");                                                                                                                                                 
+            return;                                                                                                                                                                             
+        }                                                                                                                                                                                       
+                                                                                                                                                                                                
         /* si nodo actual es null, quiere decir que llegamos a una hoja */
         if (nodo_actual == null) {
             if (nuevo_nodo.getValor() < nodo_padre.getValor()) {
@@ -235,7 +235,8 @@ public class Arbol_binario {
         }
 
         System.out.println(nodo.getValor() + nodo.getEstado() + " | Nivel izq: " 
-                + nodo.getNivel_izq() + "| Nivel der: " + nodo.getNivel_der());
+                + nodo.getNivel_izq() + "| Nivel der: " + nodo.getNivel_der()
+                + " | Profundidad: " + nodo.getProfundidad());
         listar(nodo.getHijo_izq(), lista_nodos);
         listar(nodo.getHijo_der(), lista_nodos);
     }
