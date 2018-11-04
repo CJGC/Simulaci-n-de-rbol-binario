@@ -31,14 +31,18 @@ public class AVL extends Arbol_binario {
         /* actualizacion de indices de nivel */
         nodo.setNivel_der(nodo_hijo_der.getNivel_izq());
         
-        if (rotacion_para.equals("insercion")) {
+        if (rotacion_para.equals("modo 1")) {
             nodo_hijo_der.setNivel_izq(nodo.getNivel_izq() + 1);
         }
         else {
             nodo_hijo_der.setNivel_izq(nodo_hijo_der.getNivel_izq() + 1);
         }
         
-            /* decirle al nodo quien es su nuevo padre y al nuevo padre decirle 
+        /* actualizacion de parametros de profundidad */
+        configurar_profundidad(nodo);
+        configurar_profundidad(nodo_hijo_der);
+        
+        /* decirle al nodo quien es su nuevo padre y al nuevo padre decirle 
         quien es su nuevo hijo */
         nodo.setPadre(nodo_hijo_der);
         nodo_hijo_der.setHijo_izq(nodo);
@@ -82,14 +86,18 @@ public class AVL extends Arbol_binario {
             nodo.setHijo_izq(null);
         }
 
-        nodo.setNivel_izq(nodo_hijo_izq.getNivel_der());
         /* actualizacion de indices de nivel */
-        if (rotacion_para.equals("insercion")) {
+        nodo.setNivel_izq(nodo_hijo_izq.getNivel_der());
+        if (rotacion_para.equals("modo 1")) {
             nodo_hijo_izq.setNivel_der(nodo.getNivel_der() + 1);
         } else {
             nodo_hijo_izq.setNivel_der(nodo_hijo_izq.getNivel_der() + 1);
         }
 
+        /* actualizacion de parametros de profundidad */
+        configurar_profundidad(nodo);
+        configurar_profundidad(nodo_hijo_izq);
+        
         /* decirle al nodo quien es su nuevo padre y al nuevo padre decirle 
         quien es su nuevo hijo */
         nodo.setPadre(nodo_hijo_izq);
@@ -117,6 +125,14 @@ public class AVL extends Arbol_binario {
         nodo_hijo_izq.setPadre(nodo_padre);
     }
 
+    private void configurar_profundidad(Nodo nodo_actual) {
+        if (nodo_actual.getNivel_izq() > nodo_actual.getNivel_der()) {
+            nodo_actual.setProfundidad(nodo_actual.getNivel_izq());
+        } else {
+            nodo_actual.setProfundidad(nodo_actual.getNivel_der());
+        }
+    }    
+    
     public void determinar_tipo_de_balance_izq(Nodo nodo_actual) {
 
         Nodo hijo_izq = nodo_actual.getHijo_izq();
@@ -125,10 +141,10 @@ public class AVL extends Arbol_binario {
         
         /* doble rotacion, primero a la izquierda y luego a la derecha */
         if (nivel_der > nivel_izq) {
-            rotacion_izq(hijo_izq, "insercion");
-            rotacion_der(nodo_actual, "insercion");
+            rotacion_izq(hijo_izq, "modo 1");
+            rotacion_der(nodo_actual, "modo 1");
         } /* rotacion simple a la derecha */ else {
-            rotacion_der(nodo_actual, "insercion");
+            rotacion_der(nodo_actual, "modo 1");
         }
     }
 
@@ -140,10 +156,10 @@ public class AVL extends Arbol_binario {
         
         /* doble rotacion, primero a la derecha y luego a la izquierda */
         if (nivel_izq > nivel_der) {
-            rotacion_der(hijo_der, "insercion");
-            rotacion_izq(nodo_actual, "insercion");
+            rotacion_der(hijo_der, "modo 1");
+            rotacion_izq(nodo_actual, "modo 1");
         } /* rotacion simple a la izquierda */ else {
-            rotacion_izq(nodo_actual, "insercion");
+            rotacion_izq(nodo_actual, "modo 1");
         }
     }
 
@@ -185,7 +201,7 @@ public class AVL extends Arbol_binario {
 
         return -1;
     }
-
+    
     public int _insertar(Nodo nuevo_nodo, Nodo nodo_actual, Nodo nodo_padre) {
         if (getRaiz() == null) {
             setRaiz(nuevo_nodo);
@@ -215,7 +231,10 @@ public class AVL extends Arbol_binario {
             Integer factor_de_balance;
             factor_de_balance
                     = calculo_factor_de_balance_izq(nodo_actual, nivel);
-
+            
+            /* configure la profundidad */
+            configurar_profundidad(nodo_actual);
+            
             /* si el valor retornado por el calculo de la balance es 1 o 0
             significa que el arbol esta balanceado */
             if (!factor_de_balance.equals(1) && !factor_de_balance.equals(0)) {
@@ -237,6 +256,9 @@ public class AVL extends Arbol_binario {
             Integer factor_de_balance;
             factor_de_balance
                     = calculo_factor_de_balance_der(nodo_actual, nivel);
+            
+            /* configure la profundidad */
+            configurar_profundidad(nodo_actual);
 
             /* si el valor retornado por el calculo de la balance es 1 o 0
             significa que el arbol esta balanceado */
@@ -263,6 +285,7 @@ public class AVL extends Arbol_binario {
         Nodo nodo_hijo_der = nodo_fuente.getHijo_der();
         Integer nivel_izq = nodo_fuente.getNivel_izq();
         Integer nivel_der = nodo_fuente.getNivel_der();
+        Integer profundidad = nodo_fuente.getProfundidad();
 
         /* configure el papel del nodo sutituto en el arbol */
         nodo_objetivo.setPadre(nodo_padre);
@@ -270,6 +293,7 @@ public class AVL extends Arbol_binario {
         nodo_objetivo.setHijo_der(nodo_hijo_der);
         nodo_objetivo.setNivel_izq(nivel_izq);
         nodo_objetivo.setNivel_der(nivel_der);
+        nodo_objetivo.setProfundidad(profundidad);
 
         /* los nuevos hijos del nodo sustituto (si existen) deben saber 
         que el sera su nuevo padre */
@@ -333,38 +357,47 @@ public class AVL extends Arbol_binario {
         return -1;
     }
     
-    private void determinar_tipo_de_balance_izq_metodo_eli(Nodo nodo_actual) {
-        Integer nivel_izq = nodo_actual.getNivel_izq();
-        Integer nivel_der = nodo_actual.getNivel_der();
+    private void determinar_tipo_de_balance_izq_elim(Nodo nodo_actual) {
+        Nodo hijo_der = nodo_actual.getHijo_der();
         
-        /* rotacion a la derecha */
-        if (nivel_der > nivel_izq) {
-            /* podria ser necesario la implementacion de un nuevo metodo de 
-            rotacion*/
-            rotacion_izq(nodo_actual, "eliminacion");
+        /* rotacion simple a la izq si el indice del hijo der es mayor */
+        if (hijo_der.getNivel_der() > hijo_der.getNivel_izq()) {
+            rotacion_izq(nodo_actual, "modo 2");
+        } /* doble rotacion der - izq */ else {
+            rotacion_der(nodo_actual.getHijo_der(), "modo 1");
+            rotacion_izq(nodo_actual, "modo 1");
         }
     }
     
-    private void determinar_tipo_de_balance_der_metodo_eli(Nodo nodo_actual) {
-        Integer nivel_izq = nodo_actual.getNivel_izq();
-        Integer nivel_der = nodo_actual.getNivel_der();
+    private void determinar_tipo_de_balance_der_elim(Nodo nodo_actual) {
+        Nodo hijo_izq = nodo_actual.getHijo_izq();
         
-        /* rotacion a la izquierda */
-        if (nivel_izq > nivel_der) {
-            rotacion_der(nodo_actual, "eliminacion");
+        /* rotacion simple a la der si el indice de hijo izq es mayor */
+        if (hijo_izq.getNivel_izq() > hijo_izq.getNivel_der()) {
+            rotacion_der(nodo_actual, "modo 2");
+        } /* doble rotacion izq - der */ else {
+            rotacion_izq(nodo_actual.getHijo_izq(), "modo 1");
+            rotacion_der(nodo_actual, "modo 1");
         }
     }
     
-    private Integer proceso_de_balance_izq(Nodo nodo_actual, Integer nivel) {
+    private Integer proceso_de_balance_izq(Nodo nodo_actual, Integer nivel) {        
         Integer factor_de_balance = 
                 calculo_factor_de_balance_izq(nodo_actual, nivel);
-
-        if (!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {
-            determinar_tipo_de_balance_izq_metodo_eli(nodo_actual);
-            return 0;
+        
+        if (!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {   
+            /* en este punto se sabe que el indice izq sera mas alto */
+            determinar_tipo_de_balance_izq_elim(nodo_actual);
+            return -1;
         }
 
-        if (factor_de_balance.equals(0)) {
+        /* indicar el padre que aumente o no */
+        if (!nodo_actual.getProfundidad().equals(nodo_actual.getNivel_izq()) &&
+                !nodo_actual.getProfundidad().
+                        equals(nodo_actual.getNivel_der())) {
+            /* una vez que sabemos que la profundidad no concuerda, 
+            actualicela */
+            configurar_profundidad(nodo_actual);
             return -1;
         }
         else {
@@ -376,17 +409,22 @@ public class AVL extends Arbol_binario {
         /* seccion de balance */
         Integer factor_de_balance =
             calculo_factor_de_balance_der(nodo_actual, nivel);
-
+        
         /* si el factor de balance no es 1 o 0 sigifica que el arbol
         esta desbalanceado */
-        if(!factor_de_balance.equals(0) && 
-                !factor_de_balance.equals(1)) {
-            determinar_tipo_de_balance_der_metodo_eli(nodo_actual);
-            return 0;
+        if(!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {
+            /* en este punto se sabe que el indice der sera mas alto */
+            determinar_tipo_de_balance_der_elim(nodo_actual);
+            return -1;
         }
 
         /* indicar al nodo padre que decremente o no */
-        if (factor_de_balance.equals(0)) {
+        if (!nodo_actual.getProfundidad().equals(nodo_actual.getNivel_izq()) &&
+                !nodo_actual.getProfundidad().
+                        equals(nodo_actual.getNivel_der())) {
+            /* una vez que sabemos que la profundidad no concuerda, 
+            actualicela */
+            configurar_profundidad(nodo_actual);
             return -1;
         } else {
             return 0;
@@ -494,7 +532,6 @@ public class AVL extends Arbol_binario {
             /* caso especial (hijo derecho sustituto inmediato) */
             if (nodo_actual.getHijo_izq() == null &&
                     nodo_actual.getHijo_der() != null) {
-                System.out.println("No tiene hijo izquierdo");
                 Object nivel;
                 nivel = derecho_inmediato(nodo_actual);
                 return nivel;
