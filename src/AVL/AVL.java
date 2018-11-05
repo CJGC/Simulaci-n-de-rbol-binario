@@ -374,7 +374,7 @@ public class AVL extends Arbol_binario {
         Nodo hijo_der = nodo_actual.getHijo_der();
         
         /* rotacion simple a la izq si el indice del hijo der es mayor */
-        if (hijo_der.getNivel_der() > hijo_der.getNivel_izq()) {
+        if (hijo_der.getNivel_der() >= hijo_der.getNivel_izq()) {
             rotacion_izq(nodo_actual, "modo 2");
         } /* doble rotacion der - izq */ else {
             rotacion_der(nodo_actual.getHijo_der(), "modo 1");
@@ -386,7 +386,7 @@ public class AVL extends Arbol_binario {
         Nodo hijo_izq = nodo_actual.getHijo_izq();
         
         /* rotacion simple a la der si el indice de hijo izq es mayor */
-        if (hijo_izq.getNivel_izq() > hijo_izq.getNivel_der()) {
+        if (hijo_izq.getNivel_izq() >= hijo_izq.getNivel_der()) {
             rotacion_der(nodo_actual, "modo 2");
         } /* doble rotacion izq - der */ else {
             rotacion_izq(nodo_actual.getHijo_izq(), "modo 1");
