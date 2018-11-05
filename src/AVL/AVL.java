@@ -12,6 +12,19 @@ public class AVL extends Arbol_binario {
         super();
     }
 
+    private Nodo copiar_nodo(Nodo nodo) {
+        Nodo copia_nodo = new Nodo();
+        copia_nodo.setEstado(nodo.getEstado());
+        copia_nodo.setHijo_izq(nodo.getHijo_izq());
+        copia_nodo.setHijo_der(nodo.getHijo_der());
+        copia_nodo.setPadre(nodo.getPadre());
+        copia_nodo.setEstado(nodo.getEstado());
+        copia_nodo.setNivel_izq(nodo.getNivel_izq());
+        copia_nodo.setNivel_der(nodo.getNivel_der());
+        copia_nodo.setProfundidad(nodo.getProfundidad());
+        return copia_nodo;
+    }
+    
     public void rotacion_izq(Nodo nodo, String rotacion_para) {
         Nodo nodo_padre = nodo.getPadre();
         Nodo nodo_hijo_der = nodo.getHijo_der();
@@ -385,10 +398,21 @@ public class AVL extends Arbol_binario {
         Integer factor_de_balance = 
                 calculo_factor_de_balance_izq(nodo_actual, nivel);
         
-        if (!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {   
+        if (!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {
+            /* obtener la antigua profundidad de nodo actual */
+            Integer antigua_profundidad = nodo_actual.getProfundidad();
+            Nodo copia_nodo_actual = copiar_nodo(nodo_actual);
+            
             /* en este punto se sabe que el indice izq sera mas alto */
             determinar_tipo_de_balance_izq_elim(nodo_actual);
-            return -1;
+            
+            /* encontrar al nodo sustituto de ese nivel */
+            nodo_actual = encontrar_sustituto(copia_nodo_actual);
+            
+            if (!nodo_actual.getProfundidad().equals(antigua_profundidad)) {
+                return -1;
+            }
+            return 0;
         }
 
         /* indicar el padre que aumente o no */
@@ -413,9 +437,20 @@ public class AVL extends Arbol_binario {
         /* si el factor de balance no es 1 o 0 sigifica que el arbol
         esta desbalanceado */
         if(!factor_de_balance.equals(0) && !factor_de_balance.equals(1)) {
+            /* obtener la antigua profundidad de nodo actual */
+            Integer antigua_profundidad = nodo_actual.getProfundidad();
+            Nodo copia_nodo_actual = copiar_nodo(nodo_actual);
+            
             /* en este punto se sabe que el indice der sera mas alto */
             determinar_tipo_de_balance_der_elim(nodo_actual);
-            return -1;
+            
+            /* encontremos al nodo sustituto de ese nivel */
+            nodo_actual = encontrar_sustituto(copia_nodo_actual);
+            
+            if (!nodo_actual.getProfundidad().equals(antigua_profundidad)) {
+                return -1;
+            }
+            return 0;
         }
 
         /* indicar al nodo padre que decremente o no */
